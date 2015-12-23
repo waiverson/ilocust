@@ -5,7 +5,9 @@ from locust.core import HttpLocust, TaskSet, task
 
 import random
 
-class AcsURI():
+
+class AcsURI(object):
+
     host = '172.20.0.214:16004'
     satisfaction = "/WEBAPI/acs/data/analysis/satisfaction"
     performance = "/WEBAPI/acs/data/analysis/performance"
@@ -17,7 +19,7 @@ class AcsURI():
     num = (20,40)
 
     @classmethod
-    def parameter(**kwargs):
+    def parameter(cls, **kwargs):
         # 随机构造访问参数
         params = {}
 
@@ -25,14 +27,16 @@ class AcsURI():
             if isinstance(v, list):
                 params[k] = random.choice(v)
             if isinstance(v, tuple):
-                params[k] = random.randint(min=v[0], max=v[1])
+                params[k] = random.randint(v[0], v[1])
 
-        for arg in kwargs:
-            for k, v in arg.items():
-                extract(k, v)
+        for k, v in kwargs.items():
+            print k,v
+            extract(k, v)
         return params
 
-class RestPerformance():
+
+class Analysis(object):
+
     # def on_start(self):
     #     """ on_start is called when a Locust start before any task is scheduled """
     #     self.login()
@@ -48,22 +52,24 @@ class RestPerformance():
 
     @task(2)
     def performance(self):
-        def is_optional(tup):
+        essential = {'uid': AcsURI.uid}
+
+        def is_optional(tup,):
             name, item = tup
             print type(item)
             return bool(
                 not name.startswith('_')
                 and not isinstance(item, str)
                 and not isinstance(item, classmethod)
-                and name != 'uid'
+                and name not in essential.keys()
                 )
-        optional = dict(filter(is_optional, vars(AcsURI).items()))
-        print optional
-        params = {'uid': AcsURI.uid}
+        essential = {'uid': AcsURI.uid}
+        optional = dict(filter(is_optional, vars(AcsURI).items(),))
         for i in range(0, random.randint(0, len(optional))):
-            params.update(dict(random.choice(optional.items())))
+            key = random.choice(optional.keys())
+            essential.update({key: optional[key]})
+        params = AcsURI.parameter(**essential)
         print params
-        print AcsURI.parameter(**params)
         response = self.client.get(AcsURI.performance, params=params)
 
     # @task(3)
@@ -75,10 +81,10 @@ class RestPerformance():
     #     pass
 
 class Acs(HttpLocust):
-    task_set = RestPerformance
+    task_set = Analysis
     min_wait = 5000
     max_wait = 9000
 
 
 if __name__ == '__main__':
-    RestPerformance().performance()
+    Analysis().performance()
