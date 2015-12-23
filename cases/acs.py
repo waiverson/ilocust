@@ -17,7 +17,7 @@ class AcsURI():
     num = (20,40)
 
     @classmethod
-    def parameter(*args):
+    def parameter(**kwargs):
         # 随机构造访问参数
         params = {}
 
@@ -27,8 +27,9 @@ class AcsURI():
             if isinstance(v, tuple):
                 params[k] = random.randint(min=v[0], max=v[1])
 
-        for arg in args:
-            extract(arg[0], arg[1])
+        for arg in kwargs:
+            for k, v in arg.items():
+                extract(k, v)
         return params
 
 class RestPerformance():
@@ -53,14 +54,17 @@ class RestPerformance():
             return bool(
                 not name.startswith('_')
                 and not isinstance(item, str)
-                and not name is not 'uid'
+                and not isinstance(item, classmethod)
+                and name != 'uid'
                 )
-        optional = list(filter(is_optional, vars(AcsURI).items()))
+        optional = dict(filter(is_optional, vars(AcsURI).items()))
+        print optional
         params = {'uid': AcsURI.uid}
-        for i in range(0, random.randint(len(optional))):
-            params.update(optional)
-        params.update(optional)
-        response = self.client.get(AcsURI.performance ,params=params)
+        for i in range(0, random.randint(0, len(optional))):
+            params.update(dict(random.choice(optional.items())))
+        print params
+        print AcsURI.parameter(**params)
+        response = self.client.get(AcsURI.performance, params=params)
 
     # @task(3)
     # def forecast(self):

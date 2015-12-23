@@ -350,8 +350,6 @@ def main():
 
     docstring, locusts = load_locustfile(locustfile)
 
-    # docstring, locusts = load_locustfile("F:\GitHub\locust\cases\locustfile.py")
-
     if options.list_commands:
         console_logger.info("Available Locusts:")
         for name in locusts:
