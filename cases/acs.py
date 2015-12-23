@@ -3,7 +3,6 @@ __author__ = 'xyc'
 
 from locust.core import HttpLocust, TaskSet, task
 
-from urls import URLs
 import random
 
 class AcsURI():
@@ -17,16 +16,20 @@ class AcsURI():
     page = (20,200)
     num = (20,40)
 
-    @staticmethod
-    def is_optional(tup):
-        name, item = tup
-        print type(item)
-        return bool(
-            not name.startswith('_')
-            and not isinstance(item, str)
-            and not name is not 'uid'
-            )
+    @classmethod
+    def parameter(*args):
+        # 随机构造访问参数
+        params = {}
 
+        def extract(k, v):
+            if isinstance(v, list):
+                params[k] = random.choice(v)
+            if isinstance(v, tuple):
+                params[k] = random.randint(min=v[0], max=v[1])
+
+        for arg in args:
+            extract(arg[0], arg[1])
+        return params
 
 class RestPerformance():
     # def on_start(self):
@@ -44,10 +47,18 @@ class RestPerformance():
 
     @task(2)
     def performance(self):
-        optional = dict(filter(AcsURI.is_optional, vars(AcsURI).items()))
+        def is_optional(tup):
+            name, item = tup
+            print type(item)
+            return bool(
+                not name.startswith('_')
+                and not isinstance(item, str)
+                and not name is not 'uid'
+                )
+        optional = list(filter(is_optional, vars(AcsURI).items()))
         params = {'uid': AcsURI.uid}
-        for i in range(0,random.randint(len(optional))):
-            params.update(random.choice(optional.items()))
+        for i in range(0, random.randint(len(optional))):
+            params.update(optional)
         params.update(optional)
         response = self.client.get(AcsURI.performance ,params=params)
 
