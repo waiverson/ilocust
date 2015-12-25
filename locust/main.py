@@ -34,7 +34,7 @@ def parse_options():
     parser.add_option(
         '-H', '--host',
         dest="host",
-        default="http://172.20.0.213:16004",
+        default="http://172.20.0.214:16004",
         help="Host to load test in the following format: http://10.21.32.33"
     )
 
@@ -343,7 +343,7 @@ def main():
         sys.exit(0)
 
     locustfile = find_locustfile(options.locustfile)
-    print locustfile
+
     if not locustfile:
         logger.error("Could not find any locustfile! Ensure file ends in '.py' and see --help for available options.")
         sys.exit(1)

@@ -15,11 +15,11 @@ class Analysis(TaskSet):
     #     self.login()
 
     @classmethod
-    def create_request(cls, builder):
+    def create_request(cls,builder):
 
-        return (builder.build_addr(), builder.build_params())
+        return builder.build_params()
 
-    @task(5)
+    @task(1)
     def forecast(self):
         dsl = {
                     'uri': "/WEBAPI/acs/data/analysis/forecast",
@@ -32,14 +32,14 @@ class Analysis(TaskSet):
                     }
               }
 
-        uri, params = Analysis.create_request(URIBuilder(json.dumps(dsl)))
+        params = Analysis.create_request(URIBuilder(json.dumps(dsl)))
 
-        @timer(uri=uri, params=str(params))
+        @timer(uri=dsl['uri'], params=str(params))
         def request():
-            self.client.get(uri, params=params)
+            self.client.get(dsl['uri'], params=params)
         request()
 
-    @task(5)
+    @task(0)
     def performance(self):
         dsl = {
                     'uri': "/WEBAPI/acs/data/analysis/performance",
@@ -54,11 +54,11 @@ class Analysis(TaskSet):
                     }
                 }
 
-        uri, params = Analysis.create_request(URIBuilder(json.dumps(dsl)))
+        params = Analysis.create_request(URIBuilder(json.dumps(dsl)))
 
-        @timer(uri=uri, params=str(params))
+        @timer(uri=dsl['uri'], params=str(params))
         def request():
-            self.client.get(uri, params=params)
+            self.client.get(dsl['uri'], params=params)
         request()
 
 class Acs(HttpLocust):

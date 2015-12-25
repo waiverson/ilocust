@@ -12,9 +12,6 @@ class AbstractRequestBuilder(object):
     def build_params(self,):
         return NotImplementedError()
 
-    def build_addr(self, ):
-        return NotImplementedError()
-
 
 class URIBuilder(AbstractRequestBuilder):
 
@@ -34,12 +31,6 @@ class URIBuilder(AbstractRequestBuilder):
                 key = random.choice(optional.keys())
                 required.update({key: optional[key]})
         return URIBuilder.extract(**required)
-
-    def build_addr(self,):
-        if self.dsl.has_key('uri'):
-            return self.dsl['uri']
-        else:
-            raise NameError, "uri is required!"
 
     @classmethod
     def extract(cls, **kwargs):
