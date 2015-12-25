@@ -15,9 +15,9 @@ class Analysis(TaskSet):
     #     self.login()
 
     @classmethod
-    def create_request(cls,builder):
+    def create_request(cls,**kwargs):
 
-        return builder.build_params()
+        return URIBuilder(json.dumps(kwargs)).build_params()
 
     @task(1)
     def forecast(self):
@@ -32,7 +32,7 @@ class Analysis(TaskSet):
                     }
               }
 
-        params = Analysis.create_request(URIBuilder(json.dumps(dsl)))
+        params = Analysis.create_request(**dsl)
 
         @timer(uri=dsl['uri'], params=str(params))
         def request():
@@ -54,7 +54,7 @@ class Analysis(TaskSet):
                     }
                 }
 
-        params = Analysis.create_request(URIBuilder(json.dumps(dsl)))
+        params = Analysis.create_request(**dsl)
 
         @timer(uri=dsl['uri'], params=str(params))
         def request():
