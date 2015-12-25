@@ -3,82 +3,63 @@ __author__ = 'xyc'
 
 from locust.core import HttpLocust, TaskSet, task
 
-import random
+import json
+from measure import timer
+from builder import URIBuilder
 
 
-class AcsURI(object):
-
-    host = '172.20.0.214:16004'
-    satisfaction = "/WEBAPI/acs/data/analysis/satisfaction"
-    performance = "/WEBAPI/acs/data/analysis/performance"
-    time_granule = ['day','month','quarter','year']
-    uid = [4,10,119]
-    group_field = ['LeadSource','kh_Type','kh_Industry','kh_Rating','Type','kh_Name']
-    tab = [0,1]
-    page = (20,200)
-    num = (20,40)
-
-    @classmethod
-    def parameter(cls, **kwargs):
-        # 随机构造访问参数
-        params = {}
-
-        def extract(k, v):
-            if isinstance(v, list):
-                params[k] = random.choice(v)
-            if isinstance(v, tuple):
-                params[k] = random.randint(v[0], v[1])
-
-        for k, v in kwargs.items():
-            print k,v
-            extract(k, v)
-        return params
-
-
-class Analysis(object):
+class Analysis(TaskSet):
 
     # def on_start(self):
     #     """ on_start is called when a Locust start before any task is scheduled """
     #     self.login()
 
-    @task(4)
-    def satisfaction(self):
-        parmas = {'time_granule':'day','app_accts':'1:00528000001EsnhAAC,2:23888217',
-                  'user_acct':"2215649033@qq.com",'start_time':'1411367308','biz_model':'1','subtype':'5','end_time':'1442903308'}
-        response = self.client.get(AcsURI.satisfaction, params=parmas)
+    @classmethod
+    def create_request(cls, builder):
 
+        return (builder.build_addr(), builder.build_params())
+
+    @task(5)
     def forecast(self):
-        pass
+        dsl = {
+                    'uri': "/WEBAPI/acs/data/analysis/forecast",
+                    'required': {
+                        'uid': [4, 10, 119]
+                    },
+                    'optional': {
+                        'group_field': ['LeadSource','kh_Type','kh_Industry','kh_Rating','Type','kh_Name'],
+                        'tab' : [0, 1]
+                    }
+              }
 
-    @task(2)
+        uri, params = Analysis.create_request(URIBuilder(json.dumps(dsl)))
+
+        @timer(uri=uri, params=str(params))
+        def request():
+            self.client.get(uri, params=params)
+        request()
+
+    @task(5)
     def performance(self):
-        essential = {'uid': AcsURI.uid}
+        dsl = {
+                    'uri': "/WEBAPI/acs/data/analysis/performance",
+                    'required': {
+                        'uid': [4, 10, 119]
+                    },
+                    'optional': {
+                        'group_field': ['LeadSource','kh_Type','kh_Industry','kh_Rating','Type','kh_Name'],
+                        'tab' : [0, 1],
+                        'page' : (20, 200),
+                        'num' : (20, 40)
+                    }
+                }
 
-        def is_optional(tup,):
-            name, item = tup
-            print type(item)
-            return bool(
-                not name.startswith('_')
-                and not isinstance(item, str)
-                and not isinstance(item, classmethod)
-                and name not in essential.keys()
-                )
-        essential = {'uid': AcsURI.uid}
-        optional = dict(filter(is_optional, vars(AcsURI).items(),))
-        for i in range(0, random.randint(0, len(optional))):
-            key = random.choice(optional.keys())
-            essential.update({key: optional[key]})
-        params = AcsURI.parameter(**essential)
-        print params
-        response = self.client.get(AcsURI.performance, params=params)
+        uri, params = Analysis.create_request(URIBuilder(json.dumps(dsl)))
 
-    # @task(3)
-    # def forecast(self):
-    #     pass
-    #
-    # @task(4)
-    # def cache(self):
-    #     pass
+        @timer(uri=uri, params=str(params))
+        def request():
+            self.client.get(uri, params=params)
+        request()
 
 class Acs(HttpLocust):
     task_set = Analysis
@@ -87,4 +68,4 @@ class Acs(HttpLocust):
 
 
 if __name__ == '__main__':
-    Analysis().performance()
+    Analysis().forecast()
