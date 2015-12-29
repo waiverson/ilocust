@@ -41,6 +41,8 @@ class URIBuilder(AbstractRequestBuilder):
                 params[k] = random.choice(v)
             if isinstance(v, tuple):
                 params[k] = random.randint(v[0], v[1])
+            else:
+                params[k] = v
         return params
 
     @classmethod

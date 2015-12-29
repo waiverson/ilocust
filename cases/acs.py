@@ -50,7 +50,8 @@ class Analysis(TaskSet):
                         'group_field': ['LeadSource','kh_Type','kh_Industry','kh_Rating','Type','kh_Name'],
                         'tab' : [0, 1],
                         'page' : (20, 200),
-                        'num' : (20, 40)
+                        'num' : (20, 40),
+                        'time_granule' : ['month', 'quanter']
                     }
                 }
 
@@ -100,6 +101,7 @@ class Analysis(TaskSet):
 
 
 class Acs(HttpLocust):
+    host = 'http://172.20.0.214:16004'
     task_set = Analysis
     min_wait = 5000
     max_wait = 9000
