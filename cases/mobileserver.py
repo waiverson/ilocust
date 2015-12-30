@@ -35,7 +35,7 @@ class Mobile(TaskSet):
 
         @timer(uri=dsl['uri'], params=str(params))
         def request():
-            self.client.get(dsl['uri'], headers=Mobile.header, params=params,hooks = dict(response=Helper.print_result))
+            self.client.get(dsl['uri'], headers=Mobile.header, params=params, hooks=dict(response=Helper.print_result))
         request()
 
     @task(1)
@@ -201,8 +201,8 @@ class Web(TaskSet):
         dsl = {
                 'uri': "/WEBAPI/webserver/view/list",
                 'optional': {
-                            'view_type': 'Sales'
-                        }
+                    'view_type': 'Sales'
+                }
         }
 
         params = Helper.create_request(**dsl)
@@ -217,8 +217,8 @@ class Web(TaskSet):
         dsl = {
                 'uri': "/WEBAPI/webserver/view/filter",
                 'optional': {
-                                'xt_view_id': 1
-                            }
+                    'xt_view_id': 1
+                }
         }
 
         params = Helper.create_request(**dsl)
@@ -287,6 +287,36 @@ class Web(TaskSet):
                 'uri': "/WEBAPI/webserver/view/info",
                 'optional': {
                         'xt_view_id': [1, 2],
+                }
+        }
+
+        params = Helper.create_request(**dsl)
+
+        @timer(uri=dsl['uri'], params=str(params))
+        def request():
+            self.client.get(dsl['uri'], headers=Web.header, params=params)
+        request()
+
+    def datasource(self):
+        dsl = {
+                'uri': "/WEBAPI/webserver/insights/datasource",
+                'optional': {
+                    'view_id': [1, 2],
+                }
+        }
+
+        params = Helper.create_request(**dsl)
+
+        @timer(uri=dsl['uri'], params=str(params))
+        def request():
+            self.client.get(dsl['uri'], headers=Web.header, params=params)
+        request()
+
+    def connect(self):
+        dsl = {
+                'uri': "/WEBAPI/webserver/extensions/connect",
+                'optional': {
+                    'ap_id': [1, 2],
                 }
         }
 
