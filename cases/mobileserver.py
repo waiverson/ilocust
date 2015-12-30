@@ -4,8 +4,8 @@ __author__ = 'xyc'
 from locust.core import HttpLocust, TaskSet, task
 
 import json
+import helper
 from measure import timer
-from helper import Helper
 
 class Mobile(TaskSet):
 
@@ -21,7 +21,7 @@ class Mobile(TaskSet):
                     },
         }
         if not Mobile.header.has_key('SESSION-TOKEN'):
-            params = Helper.create_request(**dsl)
+            params = helper.create_request(**dsl)
             r = self.client.post(dsl['uri'], data=params)
             self.header['SESSION-TOKEN'] = json.loads(r.text)['result']['token']
 
@@ -31,11 +31,11 @@ class Mobile(TaskSet):
                 'uri': "/WEBAPI/appserver/app-account/",
         }
 
-        params = Helper.create_request(**dsl)
+        params = helper.create_request(**dsl)
 
         @timer(uri=dsl['uri'], params=str(params))
         def request():
-            self.client.get(dsl['uri'], headers=Mobile.header, params=params, hooks=dict(response=Helper.print_result))
+            self.client.get(dsl['uri'], headers=Mobile.header, params=params, hooks=dict(response=helper.print_result))
         request()
 
     @task(1)
@@ -44,7 +44,7 @@ class Mobile(TaskSet):
                 'uri': "/WEBAPI/appserver/me/",
         }
 
-        params = Helper.create_request(**dsl)
+        params = helper.create_request(**dsl)
 
         @timer(uri=dsl['uri'], params=str(params))
         def request():
@@ -57,7 +57,7 @@ class Mobile(TaskSet):
                 'uri': "/WEBAPI/appserver/me/fetchall",
         }
 
-        params = Helper.create_request(**dsl)
+        params = helper.create_request(**dsl)
 
         @timer(uri=dsl['uri'], params=str(params))
         def request():
@@ -70,7 +70,7 @@ class Mobile(TaskSet):
                 'uri': "/WEBAPI/appserver/org/contact",
         }
 
-        params = Helper.create_request(**dsl)
+        params = helper.create_request(**dsl)
 
         @timer(uri=dsl['uri'], params=str(params))
         def request():
@@ -86,7 +86,7 @@ class Mobile(TaskSet):
                         }
         }
 
-        params = Helper.create_request(**dsl)
+        params = helper.create_request(**dsl)
 
         @timer(uri=dsl['uri'], params=str(params))
         def request():
@@ -102,7 +102,7 @@ class Mobile(TaskSet):
                             }
         }
 
-        params = Helper.create_request(**dsl)
+        params = helper.create_request(**dsl)
 
         @timer(uri=dsl['uri'], params=str(params))
         def request():
@@ -118,7 +118,7 @@ class Mobile(TaskSet):
                             }
         }
 
-        params = Helper.create_request(**dsl)
+        params = helper.create_request(**dsl)
 
         @timer(uri=dsl['uri'], params=str(params))
         def request():
@@ -138,7 +138,7 @@ class Mobile(TaskSet):
                 }
         }
 
-        params = Helper.create_request(**dsl)
+        params = helper.create_request(**dsl)
 
         @timer(uri=dsl['uri'], params=str(params))
         def request():
@@ -155,7 +155,7 @@ class Mobile(TaskSet):
                 }
         }
 
-        params = Helper.create_request(**dsl)
+        params = helper.create_request(**dsl)
 
         @timer(uri=dsl['uri'], params=str(params))
         def request():
@@ -171,7 +171,7 @@ class Mobile(TaskSet):
                 }
         }
 
-        params = Helper.create_request(**dsl)
+        params = helper.create_request(**dsl)
 
         @timer(uri=dsl['uri'], params=str(params))
         def request():
@@ -192,7 +192,7 @@ class Web(TaskSet):
                     },
         }
         if not Web.header.has_key('SESSION-TOKEN'):
-            params = Helper.create_request(**dsl)
+            params = helper.create_request(**dsl)
             r = self.client.post(dsl['uri'], data=params)
             self.header['SESSION-TOKEN'] = json.loads(r.text)['result']['token']
 
@@ -205,7 +205,7 @@ class Web(TaskSet):
                 }
         }
 
-        params = Helper.create_request(**dsl)
+        params = helper.create_request(**dsl)
 
         @timer(uri=dsl['uri'], params=str(params))
         def request():
@@ -221,7 +221,7 @@ class Web(TaskSet):
                 }
         }
 
-        params = Helper.create_request(**dsl)
+        params = helper.create_request(**dsl)
 
         @timer(uri=dsl['uri'], params=str(params))
         def request():
@@ -237,7 +237,7 @@ class Web(TaskSet):
                             }
         }
 
-        params = Helper.create_request(**dsl)
+        params = helper.create_request(**dsl)
 
         @timer(uri=dsl['uri'], params=str(params))
         def request():
@@ -257,7 +257,7 @@ class Web(TaskSet):
                 }
         }
 
-        params = Helper.create_request(**dsl)
+        params = helper.create_request(**dsl)
 
         @timer(uri=dsl['uri'], params=str(params))
         def request():
@@ -274,7 +274,7 @@ class Web(TaskSet):
                 }
         }
 
-        params = Helper.create_request(**dsl)
+        params = helper.create_request(**dsl)
 
         @timer(uri=dsl['uri'], params=str(params))
         def request():
@@ -290,7 +290,7 @@ class Web(TaskSet):
                 }
         }
 
-        params = Helper.create_request(**dsl)
+        params = helper.create_request(**dsl)
 
         @timer(uri=dsl['uri'], params=str(params))
         def request():
@@ -305,7 +305,7 @@ class Web(TaskSet):
                 }
         }
 
-        params = Helper.create_request(**dsl)
+        params = helper.create_request(**dsl)
 
         @timer(uri=dsl['uri'], params=str(params))
         def request():
@@ -320,7 +320,7 @@ class Web(TaskSet):
                 }
         }
 
-        params = Helper.create_request(**dsl)
+        params = helper.create_request(**dsl)
 
         @timer(uri=dsl['uri'], params=str(params))
         def request():

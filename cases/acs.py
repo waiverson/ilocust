@@ -3,21 +3,11 @@ __author__ = 'xyc'
 
 from locust.core import HttpLocust, TaskSet, task
 
-import json
+import helper
 from measure import timer
-from builder import URIBuilder
 
 
 class Analysis(TaskSet):
-
-    # def on_start(self):
-    #     """ on_start is called when a Locust start before any task is scheduled """
-    #     self.login()
-
-    @classmethod
-    def create_request(cls, **kwargs):
-
-        return URIBuilder(json.dumps(kwargs)).build_params()
 
     @task(3)
     def forecast(self):
@@ -32,7 +22,7 @@ class Analysis(TaskSet):
                     }
               }
 
-        params = Analysis.create_request(**dsl)
+        params = helper.create_request(**dsl)
 
         @timer(uri=dsl['uri'], params=str(params))
         def request():
@@ -55,7 +45,7 @@ class Analysis(TaskSet):
                     }
                 }
 
-        params = Analysis.create_request(**dsl)
+        params = helper.create_request(**dsl)
 
         @timer(uri=dsl['uri'], params=str(params))
         def request():
@@ -74,7 +64,7 @@ class Analysis(TaskSet):
                     }
                 }
 
-        params = Analysis.create_request(**dsl)
+        params = helper.create_request(**dsl)
 
         @timer(uri=dsl['uri'], params=str(params))
         def request():
@@ -91,7 +81,7 @@ class Analysis(TaskSet):
             },
         }
 
-        params = Analysis.create_request(**dsl)
+        params = helper.create_request(**dsl)
 
         @timer(uri=dsl['uri'], params=str(params))
         def request():
