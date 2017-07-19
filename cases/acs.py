@@ -12,7 +12,7 @@ class Analysis(TaskSet):
     @task(3)
     def forecast(self):
         dsl = {
-                    'uri': "/WEBAPI/acs/data/analysis/forecast",
+                    'uri': "/xxx",
                     'required': {
                         'uid': [4, 10, 119]
                     },
@@ -32,7 +32,7 @@ class Analysis(TaskSet):
     @task(6)
     def performance(self):
         dsl = {
-                    'uri': "/WEBAPI/acs/data/analysis/performance",
+                    'uri': "/xxx",
                     'required': {
                         'uid': [4, 10, 119]
                     },
@@ -55,7 +55,7 @@ class Analysis(TaskSet):
     @task(1)
     def notice(self):
         dsl = {
-                    'uri': "/WEBAPI/acs/data/analysis/notice",
+                    'uri': "/xxx",
                     'required': {
                         'uid': [4, 10, 119]
                     },
@@ -74,7 +74,7 @@ class Analysis(TaskSet):
     @task(18)
     def filed_values(self):
         dsl = {
-            'uri': "/WEBAPI/acs/data/analysis/fieldvalues",
+            'uri': "/xxx",
             'required': {
                 'uid': [4, 10, 119],
                 'id': [1,2,4,6,8,10,13,14,15,16,17,18,19,22,23]
@@ -91,7 +91,7 @@ class Analysis(TaskSet):
 
 
 class Acs(HttpLocust):
-    host = 'http://172.20.0.214:16004'
+    host = 'http://xx.xx.xx.xxx:xx'
     task_set = Analysis
     min_wait = 5000
     max_wait = 9000
