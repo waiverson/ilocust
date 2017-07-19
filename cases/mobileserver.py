@@ -15,9 +15,9 @@ class Mobile(TaskSet):
 
         """ on_start is called when a Locust start before any task is scheduled """
         dsl = {
-                    'uri': "/WEBAPI/auth/accessToken/",
+                    'uri': "/WEBAPI/accessToken/",
                     'required': {
-                    'user':'2215649033@qq.com','password':'123456@a','domain':'987654321','platform':'mobile'
+                    'user':'xxx@qq.com','password':'ccc@a','domain':'xxx','platform':'mobile'
                     },
         }
         if not Mobile.header.has_key('SESSION-TOKEN'):
@@ -28,7 +28,7 @@ class Mobile(TaskSet):
     @task(1)
     def app_account(self):
         dsl = {
-                'uri': "/WEBAPI/appserver/app-account/",
+                'uri': "/WEBAPI/app-account/",
         }
 
         params = helper.create_request(**dsl)
@@ -41,7 +41,7 @@ class Mobile(TaskSet):
     @task(1)
     def me(self):
         dsl = {
-                'uri': "/WEBAPI/appserver/me/",
+                'uri': "/WEBAPI/me/",
         }
 
         params = helper.create_request(**dsl)
@@ -54,7 +54,7 @@ class Mobile(TaskSet):
     @task(1)
     def fetchall(self):
         dsl = {
-                'uri': "/WEBAPI/appserver/me/fetchall",
+                'uri': "/WEBAPI/me/fetchall",
         }
 
         params = helper.create_request(**dsl)
@@ -67,7 +67,7 @@ class Mobile(TaskSet):
     @task(1)
     def contact(self):
         dsl = {
-                'uri': "/WEBAPI/appserver/org/contact",
+                'uri': "/WEBAPI/org/contact",
         }
 
         params = helper.create_request(**dsl)
@@ -80,7 +80,7 @@ class Mobile(TaskSet):
     @task(1)
     def view_list(self):
         dsl = {
-                'uri': "/WEBAPI/appserver/view/list",
+                'uri': "/WEBAPI/view/list",
                 'optional': {
                             'view_type': 'Sales'
                         }
@@ -96,7 +96,7 @@ class Mobile(TaskSet):
     @task(1)
     def filter(self):
         dsl = {
-                'uri': "/WEBAPI/appserver/view/filter",
+                'uri': "/WEBAPI/view/filter",
                 'optional': {
                                 'xt_view_id': 1
                             }
@@ -112,7 +112,7 @@ class Mobile(TaskSet):
     @task(1)
     def field_values(self):
         dsl = {
-                'uri': "/WEBAPI/appserver/view/fieldvalues",
+                'uri': "/WEBAPI/view/fieldvalues",
                 'optional': {
                                 'id': 1
                             }
@@ -128,7 +128,7 @@ class Mobile(TaskSet):
     @task(1)
     def performance(self):
         dsl = {
-                'uri': "/WEBAPI/appserver/data/analyses/performance",
+                'uri': "/WEBAPI/data/analyses/performance",
                 'optional': {
                         'group_field': ['LeadSource','kh_Type','kh_Industry','kh_Rating','Type','kh_Name'],
                         'tab' : [0, 1],
@@ -148,7 +148,7 @@ class Mobile(TaskSet):
     @task(1)
     def forecast(self):
         dsl = {
-                'uri': "/WEBAPI/appserver/data/analyses/forecast",
+                'uri': "/WEBAPI/data/analyses",
                 'optional': {
                         'group_field': ['LeadSource','kh_Type','kh_Industry','kh_Rating','Type','kh_Name'],
                         'tab' : [0, 1]
@@ -165,7 +165,7 @@ class Mobile(TaskSet):
     @task(1)
     def info(self):
         dsl = {
-                'uri': "/WEBAPI/appserver/view/info",
+                'uri': "/WEBAPI/view/info",
                 'optional': {
                         'xt_view_id': [1, 2],
                 }
@@ -186,7 +186,7 @@ class Web(TaskSet):
 
         """ on_start is called when a Locust start before any task is scheduled """
         dsl = {
-                    'uri': "/WEBAPI/auth/accessToken/",
+                    'uri': "/WEBAPI/accessToken/",
                     'required': {
                     'user':'2215649033@qq.com','password':'123456@a','domain':'987654321','platform':'mobile'
                     },
@@ -199,7 +199,7 @@ class Web(TaskSet):
     @task(1)
     def view_list(self):
         dsl = {
-                'uri': "/WEBAPI/webserver/view/list",
+                'uri': "/WEBAPI/view/list",
                 'optional': {
                     'view_type': 'Sales'
                 }
@@ -215,7 +215,7 @@ class Web(TaskSet):
     @task(1)
     def filter(self):
         dsl = {
-                'uri': "/WEBAPI/webserver/view/filter",
+                'uri': "/WEBAPI/view/filter",
                 'optional': {
                     'xt_view_id': 1
                 }
@@ -231,7 +231,7 @@ class Web(TaskSet):
     @task(1)
     def field_values(self):
         dsl = {
-                'uri': "/WEBAPI/webserver/view/fieldvalues",
+                'uri': "/WEBAPI/view/fieldvalues",
                 'optional': {
                                 'id': 1
                             }
@@ -247,7 +247,7 @@ class Web(TaskSet):
     @task(1)
     def performance(self):
         dsl = {
-                'uri': "/WEBAPI/webserver/data/analyses/performance",
+                'uri': "/WEBAPI/data/analyses/performance",
                 'optional': {
                         'group_field': ['LeadSource','kh_Type','kh_Industry','kh_Rating','Type','kh_Name'],
                         'tab' : [0, 1],
@@ -267,7 +267,7 @@ class Web(TaskSet):
     @task(1)
     def forecast(self):
         dsl = {
-                'uri': "/WEBAPI/webserver/data/analyses/forecast",
+                'uri': "/WEBAPI/data/analyses/forecast",
                 'optional': {
                         'group_field': ['LeadSource','kh_Type','kh_Industry','kh_Rating','Type','kh_Name'],
                         'tab' : [0, 1]
@@ -284,7 +284,7 @@ class Web(TaskSet):
     @task(1)
     def info(self):
         dsl = {
-                'uri': "/WEBAPI/webserver/view/info",
+                'uri': "/WEBAPI/view/info",
                 'optional': {
                         'xt_view_id': [1, 2],
                 }
@@ -299,7 +299,7 @@ class Web(TaskSet):
 
     def datasource(self):
         dsl = {
-                'uri': "/WEBAPI/webserver/insights/datasource",
+                'uri': "/WEBAPI/insights/datasource",
                 'optional': {
                     'view_id': [1, 2],
                 }
@@ -314,7 +314,7 @@ class Web(TaskSet):
 
     def connect(self):
         dsl = {
-                'uri': "/WEBAPI/webserver/extensions/connect",
+                'uri': "/WEBAPI/extensions/connect",
                 'optional': {
                     'ap_id': [1, 2],
                 }
@@ -330,14 +330,14 @@ class Web(TaskSet):
 
 class MobilePortal(HttpLocust):
     weight = 1
-    host = 'http://172.20.0.214:16001'
+    host = 'http://172.20.0.xxx:xxx'
     task_set = Mobile
     min_wait = 5000
     max_wait = 9000
 
 class WebPortal(HttpLocust):
     weight = 2
-    host = 'http://172.20.0.214:16001'
+    host = 'http://172.20.0.xxx:xxx'
     task_set = Web
     min_wait = 5000
     max_wait = 9000
